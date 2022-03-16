@@ -1,0 +1,67 @@
+---
+# ElasticSearch
+elasticsearch:
+  enabled: false
+  version: "8.x"
+  src: "elastic_co"
+  service:
+    enabled: true
+    state: "started"
+
+# ElasticSearch -> install
+elasticsearch_install:
+  enabled: false
+  packages: ["elasticsearch"]
+
+# ElasticSearch -> config -> elasticsearch.yml
+elasticsearch_yml:
+  enabled: false
+  file: "elasticsearch.yml"
+  src: "elasticsearch_yml.j2"
+  backup: false
+  vars:
+    path.data: "/var/lib/elasticsearch"
+    path.logs: "/var/log/elasticsearch"
+    xpack.security.enabled: false
+    xpack.security.enrollment.enabled: true
+    xpack.security.http.ssl:
+      enabled: true
+      keystore.path: "certs/http.p12"
+    xpack.security.transport.ssl:
+      enabled: true
+      verification_mode: "certificate"
+      keystore.path: "certs/transport.p12"
+      truststore.path: "certs/transport.p12"
+    cluster.initial_master_nodes: ["debian11-test"]
+    http.host: [_local_, _site_]
+
+# ElasticSearch -> config -> jvm.options
+elasticsearch_jvm_options:
+  enabled: false
+  file: "jvm.options"
+  src: "elasticsearch_jvm_options.j2"
+  backup: false
+  vars:
+    - "8-13:-XX:+UseConcMarkSweepGC"
+    - "8-13:-XX:CMSInitiatingOccupancyFraction=75"
+    - "8-13:-XX:+UseCMSInitiatingOccupancyOnly"
+    - "14-:-XX:+UseG1GC"
+    - "-Djava.io.tmpdir=${ES_TMPDIR}"
+    - "-XX:+HeapDumpOnOutOfMemoryError"
+    - "9-:-XX:+ExitOnOutOfMemoryError"
+    - "-XX:HeapDumpPath=/var/lib/elasticsearch"
+    - "-XX:ErrorFile=/var/log/elasticsearch/hs_err_pid%p.log"
+    - "-Xlog:gc*,gc+age=trace,safepoint:file=/var/log/elasticsearch/gc.log:utctime,pid,tags:filecount=32,filesize=64m"
+
+# ElasticSearch -> constants
+elasticsearch_const:
+  Debian:
+    dependencies: [apt-transport-https, gnupg2, ca-certificates, openjdk-11-jdk]
+    elastic_co:
+      repo: "deb https://artifacts.elastic.co/packages/{{ elasticsearch.version }}/apt stable main"
+      gpg: "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
+  RedHat:
+    dependencies: ["gnupg2", "java-11-openjdk"]
+    elastic_co:
+      repo: "https://artifacts.elastic.co/packages/{{ elasticsearch.version }}/yum"
+      gpg: "https://artifacts.elastic.co/GPG-KEY-elasticsearch"

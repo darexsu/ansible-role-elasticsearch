@@ -1,0 +1,31 @@
+---
+- name: ensure dependencies are installed.
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+  with_items: "{{ elasticsearch_const[ansible_os_family]['dependencies'] }}"
+
+- name: add elasticsearch repo for redhat
+  block:
+    - name: import elasticsearch gpg key
+      ansible.builtin.rpm_key:
+        key: "{{ elasticsearch_const[ansible_os_family]['elastic_co']['gpg'] }}"
+        state: present
+
+    - name: add elasticsearch repository
+      ansible.builtin.yum_repository:
+        name: "elasticsearch"
+        description: "Elasticsearch repository"
+        baseurl: "{{ elasticsearch_const[ansible_os_family]['elastic_co']['repo'] }}"
+        gpgcheck: true
+        enabled: true
+        module_hotfixes: true
+  when: elasticsearch.src == "elastic_co"
+
+- name: install elasticsearch
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+  with_items: "{{ elasticsearch_install['packages'] }}"

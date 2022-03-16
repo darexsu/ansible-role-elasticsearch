@@ -1,0 +1,40 @@
+---
+- name: merge dictionaries
+  block:
+    - include_vars:
+        file: ../../darexsu.elasticsearch/defaults/main.yml
+        name: elasticsearch_default_vars
+
+    - name: merge default and new dictionaries
+      set_fact:
+        "{{ item.key }}": "{{ elasticsearch_default_vars[item.key] | combine(merge[item.key], recursive=True)}}"
+      when: elasticsearch_default_vars[item.key] is defined
+      with_dict: "{{ merge }}"
+
+    - name: combine defaults vars with merge dictionary
+      set_fact:
+        merge: "{{ elasticsearch_default_vars | combine(merge, recursive=True)}}"
+  when: merge is defined
+
+- name: elasticsearch role is disabled
+  meta: end_play
+  when: not elasticsearch.enabled
+
+- name: include elasticsearch install
+  include_tasks: ./tasks/install/elasticsearch_install_{{ ansible_os_family }}.yml
+  when: elasticsearch_install.enabled
+
+- name: gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: include elasticsearch config
+  include_tasks: ./tasks/config/elasticsearch_config.yml
+  when: ("elasticsearch") in ansible_facts.packages
+
+- name: "ensure elasticsearch is {{ elasticsearch['service']['state'] }}"
+  ansible.builtin.service:
+    name: elasticsearch
+    state: "{{ elasticsearch['service']['state'] }}"
+    enabled: "{{ elasticsearch['service']['enabled'] }}"
+  when: ("elasticsearch") in ansible_facts.packages
