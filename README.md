@@ -143,7 +143,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       include_role:
         name: darexsu.elasticsearch
 ```
-##### Configure: jvmo.options (short version)
+##### Configure: jvm.options (short version)
 ```yaml
 - hosts: all
   become: true
@@ -306,7 +306,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       include_role:
         name: darexsu.elasticsearch
 ```
-##### Configure: jvmo.options (full version)
+##### Configure: jvm.options (full version)
 ```yaml
 - hosts: all
   become: true
