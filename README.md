@@ -78,7 +78,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         file: "jvm.options"
         src: "elasticsearch_jvm_options.j2"
         backup: false
-        vars:
+        data:
           - "-Djava.io.tmpdir=/var/log/elasticsearch"
 
   tasks:
@@ -122,7 +122,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         file: "elasticsearch.yml"
         src: "elasticsearch_yml.j2"
         backup: false
-        vars:
+        data:
           path.data: "/var/lib/elasticsearch"
           path.logs: "/var/log/elasticsearch"
           xpack.security.enabled: false
@@ -159,7 +159,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         file: "jvm.options"
         src: "elasticsearch_jvm_options.j2"
         backup: false
-        vars:
+        data:
           - "8-13:-XX:+UseConcMarkSweepGC"
           - "8-13:-XX:CMSInitiatingOccupancyFraction=75"
           - "8-13:-XX:+UseCMSInitiatingOccupancyOnly"
@@ -186,7 +186,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
     elasticsearch:
       enabled: true
       version: "8.x"
-      src: "elastic_co"
+      repo: "elastic"
       service:
         enabled: true
         state: "started"
@@ -200,7 +200,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       file: "elasticsearch.yml"
       src: "elasticsearch_yml.j2"
       backup: false
-      vars:
+      data:
         path.data: "/var/lib/elasticsearch"
         path.logs: "/var/log/elasticsearch"
         xpack.security.enabled: false
@@ -221,7 +221,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       file: "jvm.options"
       src: "elasticsearch_jvm_options.j2"
       backup: false
-      vars:
+      data:
         - "8-13:-XX:+UseConcMarkSweepGC"
         - "8-13:-XX:CMSInitiatingOccupancyFraction=75"
         - "8-13:-XX:+UseCMSInitiatingOccupancyOnly"
@@ -248,7 +248,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
     elasticsearch:
       enabled: true
       version: "8.x"
-      src: "elastic_co"
+      repo: "elastic"
       service:
         enabled: true
         state: "started"
@@ -272,7 +272,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
     elasticsearch:
       enabled: true
       version: "8.x"
-      src: "elastic_co"
+      src: "elastic"
       service:
         enabled: true
         state: "started"
@@ -282,7 +282,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       file: "elasticsearch.yml"
       src: "elasticsearch_yml.j2"
       backup: false
-      vars:
+      data:
         path.data: "/var/lib/elasticsearch"
         path.logs: "/var/log/elasticsearch"
         xpack.security.enabled: false
@@ -313,7 +313,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
     elasticsearch:
       enabled: true
       version: "8.x"
-      src: "elastic_co"
+      src: "elastic"
       service:
         enabled: true
         state: "started"
@@ -323,7 +323,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       file: "jvm.options"
       src: "elasticsearch_jvm_options.j2"
       backup: false
-      vars:
+      data:
         - "8-13:-XX:+UseConcMarkSweepGC"
         - "8-13:-XX:CMSInitiatingOccupancyFraction=75"
         - "8-13:-XX:+UseCMSInitiatingOccupancyOnly"
