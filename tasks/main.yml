@@ -20,16 +20,16 @@
   meta: end_play
   when: not elasticsearch.enabled
 
-- name: include elasticsearch install
-  include_tasks: ./tasks/install/elasticsearch_install_{{ ansible_os_family }}.yml
+- name: "-> 01_Elasticsearch_install_{{ ansible_os_family }}.yml"
+  include_tasks: "./tasks/01_Elasticsearch_install_{{ ansible_os_family }}.yml"
   when: elasticsearch_install.enabled
 
 - name: gather the package facts
   ansible.builtin.package_facts:
     manager: auto
 
-- name: include elasticsearch config
-  include_tasks: ./tasks/config/elasticsearch_config.yml
+- name: "-> 02_Elasticsearch_config.yml"
+  include_tasks: "./tasks/02_Elasticsearch_config.yml"
   when: ("elasticsearch") in ansible_facts.packages
 
 - name: "ensure elasticsearch is {{ elasticsearch['service']['state'] }}"

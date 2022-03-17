@@ -4,12 +4,12 @@
   - Role:
       - [platforms](#platforms)
       - [install](#install)
-      - [behaviour](#behaviour)
-  - Playbooks (short version):
-      - [install and configure: Elasticsearch](#install-and-configure-elasticsearch-short-version)
-          - [install: Elasticsearch](#install-elasticsearch-short-version)          
-          - [configure: elasticsearch.yml](#configure-elasticsearchyml-short-version)
-          - [configure: jvm.options](#configure-jvmoptions-short-version)
+      - [merge behaviour](#merge-behaviour)
+  - Playbooks (merge version):
+      - [install and configure: Elasticsearch](#install-and-configure-elasticsearch-merge-version)
+          - [install: Elasticsearch](#install-elasticsearch-merge-version)          
+          - [configure: elasticsearch.yml](#configure-elasticsearchyml-merge-version)
+          - [configure: jvm.options](#configure-jvmoptions-merge-version)
   - Playbooks (full version):
       - [install and configure: Elasticsearch](#install-and-configure-elasticsearch-full-version)
           - [install: Elasticsearch](#install-elasticsearch-full-version)          
@@ -18,7 +18,7 @@
 
 ### Platforms
 
-|  Testing         |  Third-party repo |
+|  Testing         |  repo: elastic    |
 | :--------------: |  :-------------:  |
 | Debian 11        |    elastic.co     |
 | Debian 10        |    elastic.co     |
@@ -33,7 +33,7 @@
 ansible-galaxy install darexsu.elasticsearch --force
 ```
 
-### Behaviour
+### Merge behaviour
 
 Replace or Merge dictionaries (with "hash_behaviour=replace" in ansible.cfg):
 ```
@@ -55,7 +55,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
     
 ```
 
-##### Install and configure: Elasticsearch (short version)
+##### Install and configure: Elasticsearch (merge version)
 ```yaml
 - hosts: all
   become: true
@@ -86,7 +86,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       include_role:
         name: darexsu.elasticsearch
 ```
-##### Install: Elasticsearch (short version)
+##### Install: Elasticsearch (merge version)
 ```yaml
 - hosts: all
   become: true
@@ -106,7 +106,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       include_role:
         name: darexsu.elasticsearch
 ```
-##### Configure: elasticsearch.yml (short version)
+##### Configure: elasticsearch.yml (merge version)
 ```yaml
 - hosts: all
   become: true
@@ -143,7 +143,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       include_role:
         name: darexsu.elasticsearch
 ```
-##### Configure: jvmo.options (short version)
+##### Configure: jvmo.options (merge version)
 ```yaml
 - hosts: all
   become: true
@@ -182,57 +182,56 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
   become: true
 
   vars:
-    merge:
-      # ElasticSearch
-      elasticsearch:
+    # ElasticSearch
+    elasticsearch:
+      enabled: true
+      version: "8.x"
+      src: "elastic_co"
+      service:
         enabled: true
-        version: "8.x"
-        src: "elastic_co"
-        service:
+        state: "started"
+    # ElasticSearch -> install
+    elasticsearch_install:
+      enabled: true
+      packages: ["elasticsearch"]
+    # ElasticSearch -> config -> elasticsearch.yml
+    elasticsearch_yml:
+      enabled: true
+      file: "elasticsearch.yml"
+      src: "elasticsearch_yml.j2"
+      backup: false
+      vars:
+        path.data: "/var/lib/elasticsearch"
+        path.logs: "/var/log/elasticsearch"
+        xpack.security.enabled: false
+        xpack.security.enrollment.enabled: true
+        xpack.security.http.ssl:
           enabled: true
-          state: "started"
-      # ElasticSearch -> install
-      elasticsearch_install:
-        enabled: true
-        packages: ["elasticsearch"]
-      # ElasticSearch -> config -> elasticsearch.yml
-      elasticsearch_yml:
-        enabled: true
-        file: "elasticsearch.yml"
-        src: "elasticsearch_yml.j2"
-        backup: false
-        vars:
-          path.data: "/var/lib/elasticsearch"
-          path.logs: "/var/log/elasticsearch"
-          xpack.security.enabled: false
-          xpack.security.enrollment.enabled: true
-          xpack.security.http.ssl:
-            enabled: true
-            keystore.path: "certs/http.p12"
-          xpack.security.transport.ssl:
-            enabled: true
-            verification_mode: "certificate"
-            keystore.path: "certs/transport.p12"
-            truststore.path: "certs/transport.p12"
-          cluster.initial_master_nodes: ["name_master_node"]
-          http.host: [_local_, _site_]
-      # ElasticSearch -> config -> jvm.options
-      elasticsearch_jvm_options:
-        enabled: true
-        file: "jvm.options"
-        src: "elasticsearch_jvm_options.j2"
-        backup: false
-        vars:
-          - "8-13:-XX:+UseConcMarkSweepGC"
-          - "8-13:-XX:CMSInitiatingOccupancyFraction=75"
-          - "8-13:-XX:+UseCMSInitiatingOccupancyOnly"
-          - "14-:-XX:+UseG1GC"
-          - "-Djava.io.tmpdir=/var/log/elasticsearch"
-          - "-XX:+HeapDumpOnOutOfMemoryError"
-          - "9-:-XX:+ExitOnOutOfMemoryError"
-          - "-XX:HeapDumpPath=/var/lib/elasticsearch"
-          - "-XX:ErrorFile=/var/log/elasticsearch/hs_err_pid%p.log"
-          - "-Xlog:gc*,gc+age=trace,safepoint:file=/var/log/elasticsearch/gc.log:utctime,pid,tags:filecount=32,filesize=64m"
+          keystore.path: "certs/http.p12"
+        xpack.security.transport.ssl:
+          enabled: true
+          verification_mode: "certificate"
+          keystore.path: "certs/transport.p12"
+          truststore.path: "certs/transport.p12"
+        cluster.initial_master_nodes: ["name_master_node"]
+        http.host: [_local_, _site_]
+    # ElasticSearch -> config -> jvm.options
+    elasticsearch_jvm_options:
+      enabled: true
+      file: "jvm.options"
+      src: "elasticsearch_jvm_options.j2"
+      backup: false
+      vars:
+        - "8-13:-XX:+UseConcMarkSweepGC"
+        - "8-13:-XX:CMSInitiatingOccupancyFraction=75"
+        - "8-13:-XX:+UseCMSInitiatingOccupancyOnly"
+        - "14-:-XX:+UseG1GC"
+        - "-Djava.io.tmpdir=/var/log/elasticsearch"
+        - "-XX:+HeapDumpOnOutOfMemoryError"
+        - "9-:-XX:+ExitOnOutOfMemoryError"
+        - "-XX:HeapDumpPath=/var/lib/elasticsearch"
+        - "-XX:ErrorFile=/var/log/elasticsearch/hs_err_pid%p.log"
+        - "-Xlog:gc*,gc+age=trace,safepoint:file=/var/log/elasticsearch/gc.log:utctime,pid,tags:filecount=32,filesize=64m"
 
   tasks:
     - name: role darexsu elasticsearch
@@ -245,19 +244,18 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
   become: true
 
   vars:
-    merge:
-      # ElasticSearch
-      elasticsearch:
+    # ElasticSearch
+    elasticsearch:
+      enabled: true
+      version: "8.x"
+      src: "elastic_co"
+      service:
         enabled: true
-        version: "8.x"
-        src: "elastic_co"
-        service:
-          enabled: true
-          state: "started"
-      # ElasticSearch -> install
-      elasticsearch_install:
-        enabled: true
-        packages: ["elasticsearch"]
+        state: "started"
+    # ElasticSearch -> install
+    elasticsearch_install:
+      enabled: true
+      packages: ["elasticsearch"]
 
   tasks:
     - name: role darexsu elasticsearch
@@ -270,36 +268,35 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
   become: true
 
   vars:
-    merge:
-      # ElasticSearch
-      elasticsearch:
+    # ElasticSearch
+    elasticsearch:
+      enabled: true
+      version: "8.x"
+      src: "elastic_co"
+      service:
         enabled: true
-        version: "8.x"
-        src: "elastic_co"
-        service:
+        state: "started"
+    # ElasticSearch -> config -> elasticsearch.yml
+    elasticsearch_yml:
+      enabled: true
+      file: "elasticsearch.yml"
+      src: "elasticsearch_yml.j2"
+      backup: false
+      vars:
+        path.data: "/var/lib/elasticsearch"
+        path.logs: "/var/log/elasticsearch"
+        xpack.security.enabled: false
+        xpack.security.enrollment.enabled: true
+        xpack.security.http.ssl:
           enabled: true
-          state: "started"
-      # ElasticSearch -> config -> elasticsearch.yml
-      elasticsearch_yml:
-        enabled: true
-        file: "elasticsearch.yml"
-        src: "elasticsearch_yml.j2"
-        backup: false
-        vars:
-          path.data: "/var/lib/elasticsearch"
-          path.logs: "/var/log/elasticsearch"
-          xpack.security.enabled: false
-          xpack.security.enrollment.enabled: true
-          xpack.security.http.ssl:
-            enabled: true
-            keystore.path: "certs/http.p12"
-          xpack.security.transport.ssl:
-            enabled: true
-            verification_mode: "certificate"
-            keystore.path: "certs/transport.p12"
-            truststore.path: "certs/transport.p12"
-          cluster.initial_master_nodes: ["name_master_node"]
-          http.host: [_local_, _site_]
+          keystore.path: "certs/http.p12"
+        xpack.security.transport.ssl:
+          enabled: true
+          verification_mode: "certificate"
+          keystore.path: "certs/transport.p12"
+          truststore.path: "certs/transport.p12"
+        cluster.initial_master_nodes: ["name_master_node"]
+        http.host: [_local_, _site_]
 
   tasks:
     - name: role darexsu elasticsearch
@@ -312,32 +309,31 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
   become: true
 
   vars:
-    merge:
-      # ElasticSearch
-      elasticsearch:
+    # ElasticSearch
+    elasticsearch:
+      enabled: true
+      version: "8.x"
+      src: "elastic_co"
+      service:
         enabled: true
-        version: "8.x"
-        src: "elastic_co"
-        service:
-          enabled: true
-          state: "started"
-      # ElasticSearch -> config -> jvm.options
-      elasticsearch_jvm_options:
-        enabled: true
-        file: "jvm.options"
-        src: "elasticsearch_jvm_options.j2"
-        backup: false
-        vars:
-          - "8-13:-XX:+UseConcMarkSweepGC"
-          - "8-13:-XX:CMSInitiatingOccupancyFraction=75"
-          - "8-13:-XX:+UseCMSInitiatingOccupancyOnly"
-          - "14-:-XX:+UseG1GC"
-          - "-Djava.io.tmpdir=/var/log/elasticsearch"
-          - "-XX:+HeapDumpOnOutOfMemoryError"
-          - "9-:-XX:+ExitOnOutOfMemoryError"
-          - "-XX:HeapDumpPath=/var/lib/elasticsearch"
-          - "-XX:ErrorFile=/var/log/elasticsearch/hs_err_pid%p.log"
-          - "-Xlog:gc*,gc+age=trace,safepoint:file=/var/log/elasticsearch/gc.log:utctime,pid,tags:filecount=32,filesize=64m"
+        state: "started"
+    # ElasticSearch -> config -> jvm.options
+    elasticsearch_jvm_options:
+      enabled: true
+      file: "jvm.options"
+      src: "elasticsearch_jvm_options.j2"
+      backup: false
+      vars:
+        - "8-13:-XX:+UseConcMarkSweepGC"
+        - "8-13:-XX:CMSInitiatingOccupancyFraction=75"
+        - "8-13:-XX:+UseCMSInitiatingOccupancyOnly"
+        - "14-:-XX:+UseG1GC"
+        - "-Djava.io.tmpdir=/var/log/elasticsearch"
+        - "-XX:+HeapDumpOnOutOfMemoryError"
+        - "9-:-XX:+ExitOnOutOfMemoryError"
+        - "-XX:HeapDumpPath=/var/lib/elasticsearch"
+        - "-XX:ErrorFile=/var/log/elasticsearch/hs_err_pid%p.log"
+        - "-Xlog:gc*,gc+age=trace,safepoint:file=/var/log/elasticsearch/gc.log:utctime,pid,tags:filecount=32,filesize=64m"
 
   tasks:
     - name: role darexsu elasticsearch

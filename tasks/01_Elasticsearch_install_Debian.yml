@@ -10,14 +10,14 @@
   block:
     - name: add elastic.co gpg key
       ansible.builtin.apt_key:
-        url: "{{ elasticsearch_const[ansible_os_family]['elastic_co']['gpg'] }}"
+        url: "{{ elasticsearch_const[ansible_os_family]['elastic']['gpg'] }}"
         state: present
 
     - name: add elastic.co repo
       ansible.builtin.apt_repository:
-        repo: "{{ elasticsearch_const[ansible_os_family]['elastic_co']['repo'] }}"
+        repo: "{{ elasticsearch_const[ansible_os_family]['elastic']['repo'] }}"
         state: present
-  when: elasticsearch.src == "elastic_co"
+  when: elasticsearch.repo == "elastic"
 
 - name: install elasticsearch
   ansible.builtin.apt:

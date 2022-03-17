@@ -3,7 +3,7 @@
 elasticsearch:
   enabled: false
   version: "8.x"
-  src: "elastic_co"
+  repo: "elastic"
   service:
     enabled: true
     state: "started"
@@ -19,7 +19,7 @@ elasticsearch_yml:
   file: "elasticsearch.yml"
   src: "elasticsearch_yml.j2"
   backup: false
-  vars:
+  data:
     path.data: "/var/lib/elasticsearch"
     path.logs: "/var/log/elasticsearch"
     xpack.security.enabled: false
@@ -41,7 +41,7 @@ elasticsearch_jvm_options:
   file: "jvm.options"
   src: "elasticsearch_jvm_options.j2"
   backup: false
-  vars:
+  data:
     - "8-13:-XX:+UseConcMarkSweepGC"
     - "8-13:-XX:CMSInitiatingOccupancyFraction=75"
     - "8-13:-XX:+UseCMSInitiatingOccupancyOnly"
@@ -57,11 +57,11 @@ elasticsearch_jvm_options:
 elasticsearch_const:
   Debian:
     dependencies: [apt-transport-https, gnupg2, ca-certificates, openjdk-11-jdk]
-    elastic_co:
+    elastic:
       repo: "deb https://artifacts.elastic.co/packages/{{ elasticsearch.version }}/apt stable main"
       gpg: "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
   RedHat:
     dependencies: ["gnupg2", "java-11-openjdk"]
-    elastic_co:
+    elastic:
       repo: "https://artifacts.elastic.co/packages/{{ elasticsearch.version }}/yum"
       gpg: "https://artifacts.elastic.co/GPG-KEY-elasticsearch"

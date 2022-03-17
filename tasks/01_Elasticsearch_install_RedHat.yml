@@ -10,18 +10,18 @@
   block:
     - name: import elasticsearch gpg key
       ansible.builtin.rpm_key:
-        key: "{{ elasticsearch_const[ansible_os_family]['elastic_co']['gpg'] }}"
+        key: "{{ elasticsearch_const[ansible_os_family]['elastic']['gpg'] }}"
         state: present
 
     - name: add elasticsearch repository
       ansible.builtin.yum_repository:
         name: "elasticsearch"
         description: "Elasticsearch repository"
-        baseurl: "{{ elasticsearch_const[ansible_os_family]['elastic_co']['repo'] }}"
+        baseurl: "{{ elasticsearch_const[ansible_os_family]['elastic']['repo'] }}"
         gpgcheck: true
         enabled: true
         module_hotfixes: true
-  when: elasticsearch.src == "elastic_co"
+  when: elasticsearch.repo == "elastic"
 
 - name: install elasticsearch
   ansible.builtin.package:
