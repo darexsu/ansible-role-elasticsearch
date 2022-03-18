@@ -4,6 +4,7 @@
   - Role:
       - [platforms](#platforms)
       - [install](#install)
+      - [requirements](#requirements)
       - [merge behaviour](#merge-behaviour)
   - Playbooks (merge version):
       - [install and configure: Elasticsearch](#install-and-configure-elasticsearch-merge-version)
@@ -32,6 +33,10 @@
 ```
 ansible-galaxy install darexsu.elasticsearch --force
 ```
+### Requirements
+collections: [ansible.posix](https://docs.ansible.com/ansible/latest/collections/ansible/posix/index.html)
+
+roles: [FirewallD](https://github.com/darexsu/ansible-role-firewalld) (will automatically be installed)
 
 ### Merge behaviour
 
