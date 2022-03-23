@@ -54,7 +54,7 @@
           8-13:-XX:CMSInitiatingOccupancyFraction=75
           8-13:-XX:+UseCMSInitiatingOccupancyOnly
           14-:-XX:+UseG1GC
-          -Djava.io.tmpdir=${ES_TMPDIR}
+          -Djava.io.tmpdir=/var/log/elasticsearch
           -XX:+HeapDumpOnOutOfMemoryError
           9-:-XX:+ExitOnOutOfMemoryError
           -XX:HeapDumpPath=/var/lib/elasticsearch
