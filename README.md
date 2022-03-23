@@ -128,19 +128,18 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         src: "elasticsearch_yml.j2"
         backup: false
         data: |
-          path.data: "/var/lib/elasticsearch"
-          path.logs: "/var/log/elasticsearch"
+          path.data: /var/lib/elasticsearch
+          path.logs: /var/log/elasticsearch
           xpack.security.enabled: false
           xpack.security.enrollment.enabled: true
           xpack.security.http.ssl:
             enabled: true
-            keystore.path: "certs/http.p12"
+            keystore.path: certs/http.p12
           xpack.security.transport.ssl:
             enabled: true
-            verification_mode: "certificate"
-            keystore.path: "certs/transport.p12"
-            truststore.path: "certs/transport.p12"
-          cluster.initial_master_nodes: ["master_node_name"]
+            verification_mode: certificate
+            keystore.path: certs/transport.p12
+            truststore.path: certs/transport.p12
           http.host: [_local_, _site_]
 
   tasks:
@@ -206,19 +205,18 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       src: "elasticsearch_yml.j2"
       backup: false
       data: |
-        path.data: "/var/lib/elasticsearch"
-        path.logs: "/var/log/elasticsearch"
+        path.data: /var/lib/elasticsearch
+        path.logs: /var/log/elasticsearch
         xpack.security.enabled: false
         xpack.security.enrollment.enabled: true
         xpack.security.http.ssl:
           enabled: true
-          keystore.path: "certs/http.p12"
+          keystore.path: certs/http.p12
         xpack.security.transport.ssl:
           enabled: true
-          verification_mode: "certificate"
-          keystore.path: "certs/transport.p12"
-          truststore.path: "certs/transport.p12"
-        cluster.initial_master_nodes: ["master_node_name"]
+          verification_mode: certificate
+          keystore.path: certs/transport.p12
+          truststore.path: certs/transport.p12
         http.host: [_local_, _site_]
     # ElasticSearch -> config -> jvm.options
     elasticsearch_jvm_options:
@@ -288,19 +286,18 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       src: "elasticsearch_yml.j2"
       backup: false
       data: |
-        path.data: "/var/lib/elasticsearch"
-        path.logs: "/var/log/elasticsearch"
+        path.data: /var/lib/elasticsearch
+        path.logs: /var/log/elasticsearch
         xpack.security.enabled: false
         xpack.security.enrollment.enabled: true
         xpack.security.http.ssl:
           enabled: true
-          keystore.path: "certs/http.p12"
+          keystore.path: certs/http.p12
         xpack.security.transport.ssl:
           enabled: true
-          verification_mode: "certificate"
-          keystore.path: "certs/transport.p12"
-          truststore.path: "certs/transport.p12"
-        cluster.initial_master_nodes: ["master_node_name"]
+          verification_mode: certificate
+          keystore.path: certs/transport.p12
+          truststore.path: certs/transport.p12
         http.host: [_local_, _site_]
 
   tasks:
