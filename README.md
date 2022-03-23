@@ -83,8 +83,17 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         file: "jvm.options"
         src: "jvm_options.j2"
         backup: false
-        data:
-          - "-Djava.io.tmpdir=/var/log/elasticsearch"
+        data: |
+          8-13:-XX:+UseConcMarkSweepGC
+          8-13:-XX:CMSInitiatingOccupancyFraction=75
+          8-13:-XX:+UseCMSInitiatingOccupancyOnly
+          14-:-XX:+UseG1GC
+          -Djava.io.tmpdir=${ES_TMPDIR}
+          -XX:+HeapDumpOnOutOfMemoryError
+          9-:-XX:+ExitOnOutOfMemoryError
+          -XX:HeapDumpPath=/var/lib/elasticsearch
+          -XX:ErrorFile=/var/log/elasticsearch/hs_err_pid%p.log
+          -Xlog:gc*,gc+age=trace,safepoint:file=/var/log/elasticsearch/gc.log:utctime,pid,tags:filecount=32,filesize=64m
 
   tasks:
     - name: role darexsu elasticsearch
