@@ -19,7 +19,7 @@ elasticsearch_yml:
   file: "elasticsearch.yml"
   src: "elasticsearch_yml.j2"
   backup: false
-  data:
+  data: |
     path.data: "/var/lib/elasticsearch"
     path.logs: "/var/log/elasticsearch"
     xpack.security.enabled: false
@@ -32,14 +32,14 @@ elasticsearch_yml:
       verification_mode: "certificate"
       keystore.path: "certs/transport.p12"
       truststore.path: "certs/transport.p12"
-    cluster.initial_master_nodes: ["debian11-test"]
+    cluster.initial_master_nodes: ["master_node_name"]
     http.host: [_local_, _site_]
 
 # ElasticSearch -> config -> jvm.options
 elasticsearch_jvm_options:
   enabled: false
   file: "jvm.options"
-  src: "elasticsearch_jvm_options.j2"
+  src: "jvm_options.j2"
   backup: false
   data:
     - "8-13:-XX:+UseConcMarkSweepGC"

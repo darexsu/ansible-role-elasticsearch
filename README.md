@@ -76,9 +76,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       elasticsearch_jvm_options:
         enabled: true
         file: "jvm.options"
-        src: "elasticsearch_jvm_options.j2"
+        src: "jvm_options.j2"
         backup: false
-        vars:
+        data:
           - "-Djava.io.tmpdir=/var/log/elasticsearch"
 
   tasks:
@@ -122,7 +122,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         file: "elasticsearch.yml"
         src: "elasticsearch_yml.j2"
         backup: false
-        vars:
+        data: |
           path.data: "/var/lib/elasticsearch"
           path.logs: "/var/log/elasticsearch"
           xpack.security.enabled: false
@@ -135,7 +135,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
             verification_mode: "certificate"
             keystore.path: "certs/transport.p12"
             truststore.path: "certs/transport.p12"
-          cluster.initial_master_nodes: ["name_master_node"]
+          cluster.initial_master_nodes: ["master_node_name"]
           http.host: [_local_, _site_]
 
   tasks:
@@ -157,9 +157,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       elasticsearch_jvm_options:
         enabled: true
         file: "jvm.options"
-        src: "elasticsearch_jvm_options.j2"
+        src: "jvm_options.j2"
         backup: false
-        vars:
+        data:
           - "8-13:-XX:+UseConcMarkSweepGC"
           - "8-13:-XX:CMSInitiatingOccupancyFraction=75"
           - "8-13:-XX:+UseCMSInitiatingOccupancyOnly"
@@ -200,7 +200,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       file: "elasticsearch.yml"
       src: "elasticsearch_yml.j2"
       backup: false
-      vars:
+      data: |
         path.data: "/var/lib/elasticsearch"
         path.logs: "/var/log/elasticsearch"
         xpack.security.enabled: false
@@ -213,15 +213,15 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           verification_mode: "certificate"
           keystore.path: "certs/transport.p12"
           truststore.path: "certs/transport.p12"
-        cluster.initial_master_nodes: ["name_master_node"]
+        cluster.initial_master_nodes: ["master_node_name"]
         http.host: [_local_, _site_]
     # ElasticSearch -> config -> jvm.options
     elasticsearch_jvm_options:
       enabled: true
       file: "jvm.options"
-      src: "elasticsearch_jvm_options.j2"
+      src: "jvm_options.j2"
       backup: false
-      vars:
+      data:
         - "8-13:-XX:+UseConcMarkSweepGC"
         - "8-13:-XX:CMSInitiatingOccupancyFraction=75"
         - "8-13:-XX:+UseCMSInitiatingOccupancyOnly"
@@ -282,7 +282,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       file: "elasticsearch.yml"
       src: "elasticsearch_yml.j2"
       backup: false
-      vars:
+      data: |
         path.data: "/var/lib/elasticsearch"
         path.logs: "/var/log/elasticsearch"
         xpack.security.enabled: false
@@ -295,7 +295,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           verification_mode: "certificate"
           keystore.path: "certs/transport.p12"
           truststore.path: "certs/transport.p12"
-        cluster.initial_master_nodes: ["name_master_node"]
+        cluster.initial_master_nodes: ["master_node_name"]
         http.host: [_local_, _site_]
 
   tasks:
@@ -321,9 +321,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
     elasticsearch_jvm_options:
       enabled: true
       file: "jvm.options"
-      src: "elasticsearch_jvm_options.j2"
+      src: "jvm_options.j2"
       backup: false
-      vars:
+      data:
         - "8-13:-XX:+UseConcMarkSweepGC"
         - "8-13:-XX:CMSInitiatingOccupancyFraction=75"
         - "8-13:-XX:+UseCMSInitiatingOccupancyOnly"

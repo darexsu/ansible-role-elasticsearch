@@ -29,7 +29,7 @@
         file: "elasticsearch.yml"
         src: "elasticsearch_yml.j2"
         backup: false
-        data:
+        data: |
           path.data: "/var/lib/elasticsearch"
           path.logs: "/var/log/elasticsearch"
           xpack.security.enabled: false
@@ -42,13 +42,13 @@
             verification_mode: "certificate"
             keystore.path: "certs/transport.p12"
             truststore.path: "certs/transport.p12"
-          cluster.initial_master_nodes: ["name_master_node"]
+          cluster.initial_master_nodes: ["master_node_name"]
           http.host: [_local_, _site_]
       # ElasticSearch -> config -> elasticsearch.yml
       elasticsearch_jvm_options:
         enabled: true
         file: "jvm.options"
-        src: "elasticsearch_jvm_options.j2"
+        src: "jvm_options.j2"
         backup: false
         data:
           - "8-13:-XX:+UseConcMarkSweepGC"
