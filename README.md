@@ -4,6 +4,7 @@
   - Role:
       - [platforms](#platforms)
       - [install](#install)
+      - [requirements](#requirements)
       - [merge behaviour](#merge-behaviour)
   - Playbooks (merge version):
       - [install and configure: Elasticsearch](#install-and-configure-elasticsearch-merge-version)
@@ -32,6 +33,10 @@
 ```
 ansible-galaxy install darexsu.elasticsearch --force
 ```
+### Requirements
+collections: [ansible.posix](https://docs.ansible.com/ansible/latest/collections/ansible/posix/index.html)
+
+roles: [FirewallD](https://github.com/darexsu/ansible-role-firewalld) (will automatically be installed)
 
 ### Merge behaviour
 
@@ -143,7 +148,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       include_role:
         name: darexsu.elasticsearch
 ```
-##### Configure: jvmo.options (merge version)
+##### Configure: jvm.options (merge version)
 ```yaml
 - hosts: all
   become: true
@@ -186,7 +191,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
     elasticsearch:
       enabled: true
       version: "8.x"
-      src: "elastic_co"
+      repo: "elastic"
       service:
         enabled: true
         state: "started"
@@ -248,7 +253,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
     elasticsearch:
       enabled: true
       version: "8.x"
-      src: "elastic_co"
+      repo: "elastic"
       service:
         enabled: true
         state: "started"
@@ -272,7 +277,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
     elasticsearch:
       enabled: true
       version: "8.x"
-      src: "elastic_co"
+      src: "elastic"
       service:
         enabled: true
         state: "started"
@@ -313,7 +318,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
     elasticsearch:
       enabled: true
       version: "8.x"
-      src: "elastic_co"
+      src: "elastic"
       service:
         enabled: true
         state: "started"
