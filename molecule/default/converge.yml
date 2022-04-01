@@ -22,7 +22,6 @@
       # ElasticSearch -> install
       elasticsearch_install:
         enabled: true
-        packages: ["elasticsearch"]
       # ElasticSearch -> config -> elasticsearch.yml
       elasticsearch_yml:
         enabled: true

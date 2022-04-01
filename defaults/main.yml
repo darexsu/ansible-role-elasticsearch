@@ -11,7 +11,6 @@ elasticsearch:
 # ElasticSearch -> install
 elasticsearch_install:
   enabled: false
-  packages: ["elasticsearch"]
 
 # ElasticSearch -> config -> elasticsearch.yml
 elasticsearch_yml:
@@ -56,11 +55,11 @@ elasticsearch_jvm_options:
 elasticsearch_const:
   Debian:
     dependencies: [apt-transport-https, gnupg2, ca-certificates, openjdk-11-jdk]
-    elastic:
-      repo: "deb https://artifacts.elastic.co/packages/{{ elasticsearch.version }}/apt stable main"
-      gpg: "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
+    elastic_repo: "deb https://artifacts.elastic.co/packages/{{ elasticsearch.version }}/apt stable main"
+    elastic_gpg: "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
+    packages: ["elasticsearch"]
   RedHat:
     dependencies: ["gnupg2", "java-11-openjdk"]
-    elastic:
-      repo: "https://artifacts.elastic.co/packages/{{ elasticsearch.version }}/yum"
-      gpg: "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
+    elastic_repo: "https://artifacts.elastic.co/packages/{{ elasticsearch.version }}/yum"
+    elastic_gpg: "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
+    packages: ["elasticsearch"]

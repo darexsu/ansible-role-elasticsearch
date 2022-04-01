@@ -7,12 +7,12 @@
       - [requirements](#requirements)
       - [merge behaviour](#merge-behaviour)
   - Playbooks (merge version):
-      - [install and configure: Elasticsearch](#install-and-configure-elasticsearch-merge-version)
+      - [install and configure: Elasticsearch 8.x](#install-and-configure-elasticsearch-merge-version)
           - [install: Elasticsearch](#install-elasticsearch-merge-version)          
           - [configure: elasticsearch.yml](#configure-elasticsearchyml-merge-version)
           - [configure: jvm.options](#configure-jvmoptions-merge-version)
   - Playbooks (full version):
-      - [install and configure: Elasticsearch](#install-and-configure-elasticsearch-full-version)
+      - [install and configure: Elasticsearch 8.x](#install-and-configure-elasticsearch-full-version)
           - [install: Elasticsearch](#install-elasticsearch-full-version)          
           - [configure: elasticsearch.yml](#configure-elasticsearchyml-full-version)
           - [configure: jvm.options](#configure-jvmoptions-full-version)
@@ -206,7 +206,6 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
     # ElasticSearch -> install
     elasticsearch_install:
       enabled: true
-      packages: ["elasticsearch"]
     # ElasticSearch -> config -> elasticsearch.yml
     elasticsearch_yml:
       enabled: true
@@ -267,7 +266,6 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
     # ElasticSearch -> install
     elasticsearch_install:
       enabled: true
-      packages: ["elasticsearch"]
 
   tasks:
     - name: role darexsu elasticsearch
